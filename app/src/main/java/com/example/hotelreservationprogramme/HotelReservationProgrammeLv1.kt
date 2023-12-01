@@ -1,11 +1,6 @@
 package com.example.hotelreservationprogramme
 
 fun main() {
-    // 변수 선언
-
-
-    // 객체 선언
-
     // 첫번째 실행 (메뉴 선택)
     println("호텔예약 프로그램 입니다.")
     println("1. 방예약, 2. 예약목록 출력, 3 예약목록 (정렬) 출력, 4. 시스템 종료, 5. 금액 입금-출금 내역 목록 출력 6. 예약 변경/취소")
@@ -13,15 +8,7 @@ fun main() {
     var menuObject = MainMenu(mainMenu)
     menuObject.mainMenu(mainMenu)
 
-
     println("호텔 예약이 완료되었습니다.")
-}
-
-abstract class CheckIfValid() {
-    abstract fun checkIfValid(value1: Int)
-    abstract fun checkIfValid(value1: Int, value2: Int)
-    var todayDate: Int = 20231201
-
 }
 
 class MainMenu(menu: Int) {
@@ -48,6 +35,35 @@ class MainMenu(menu: Int) {
     }
 }
 
+class Menu1 {
+    fun menu1() {
+
+        println("예약자분의 성함을 입력해주세요.")
+        var name = readLine()!!
+
+        println("예약할 방번호를 입력해주세요.")
+        var roomNumber = readLine()!!.toInt()
+        var roomNumberObject = RoomNumber()
+        roomNumberObject.checkIfValid(roomNumber)
+
+        println("체크인 날짜를 입력해주세요 표기형식. 20230631")
+        var checkInDate = readLine()!!.toInt()
+        var checkInDateObject = CheckInDate()
+        checkInDateObject.checkIfValid(checkInDate)
+
+        println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
+        var checkOutDate = readLine()!!.toInt()
+        var checkOutDateObject = CheckOutDate()
+        checkOutDateObject.checkIfValid(checkInDate, checkOutDate)
+    }
+
+}
+
+abstract class CheckIfValid() {
+    abstract fun checkIfValid(value1: Int)
+    abstract fun checkIfValid(value1: Int, value2: Int)
+    var todayDate: Int = 20231201
+}
 
 class RoomNumber() : CheckIfValid() {
     override fun checkIfValid(roomNumber: Int) {
@@ -84,6 +100,7 @@ class CheckInDate() : CheckIfValid() {
         TODO("Not yet implemented")
     }
 }
+
 class CheckOutDate() : CheckIfValid() {
     override fun checkIfValid(value1: Int) {
         TODO("Not yet implemented")
@@ -101,30 +118,4 @@ class CheckOutDate() : CheckIfValid() {
             }
         }
     }
-
-
-}
-
-class Menu1 {
-    fun menu1() {
-
-        println("예약자분의 성함을 입력해주세요.")
-        var name = readLine()!!
-
-        println("예약할 방번호를 입력해주세요.")
-        var roomNumber = readLine()!!.toInt()
-        var roomNumberObject = RoomNumber()
-        roomNumberObject.checkIfValid(roomNumber)
-
-        println("체크인 날짜를 입력해주세요 표기형식. 20230631")
-        var checkInDate = readLine()!!.toInt()
-        var checkInDateObject = CheckInDate()
-        checkInDateObject.checkIfValid(checkInDate)
-
-        println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
-        var checkOutDate = readLine()!!.toInt()
-        var checkOutDateObject = CheckOutDate()
-        checkOutDateObject.checkIfValid(checkInDate, checkOutDate)
-    }
-
 }

@@ -2,61 +2,56 @@ package com.example.hotelreservationprogramme
 
 fun main() {
     // 변수 선언
-    var menu: Int
-    var name: String
-    var roomNumber: Int
-    var checkInDate: Int
-    var checkOutDate: Int
+
 
     // 객체 선언
 
     // 첫번째 실행 (메뉴 선택)
     println("호텔예약 프로그램 입니다.")
     println("1. 방예약, 2. 예약목록 출력, 3 예약목록 (정렬) 출력, 4. 시스템 종료, 5. 금액 입금-출금 내역 목록 출력 6. 예약 변경/취소")
-    menu = readLine()!!.toInt()
-    var menuObject = Menu(menu, 0)
-    menuObject.checkIfValid()
-
+    var mainMenu: Int = readLine()!!.toInt()
+    var menuObject = MainMenu(mainMenu)
+    menuObject.mainMenu(mainMenu)
 
 
     println("호텔 예약이 완료되었습니다.")
 }
 
 abstract class CheckIfValid() {
-    abstract fun checkIfValid()
-    abstract var value1: Int
-    abstract var value2: Int
+    abstract fun checkIfValid(value1: Int)
+    abstract fun checkIfValid(value1: Int, value2: Int)
     var todayDate: Int = 20231201
 
 }
 
-class Menu(override var value1: Int, override var value2: Int) : CheckIfValid() {
-    var menu = value1
-    override fun checkIfValid() {
+class MainMenu(menu: Int) {
+    fun mainMenu(menu: Int) {
         while (true) {
             if (menu == 1) {
+                var menu1 = Menu1()
+                menu1.menu1()
                 break
             } else if (menu == 2) {
-                println("수정"); break
+                println("--"); break
             } else if (menu == 3) {
-                println("수정"); break
+                println("--"); break
             } else if (menu == 4) {
-                println("수정"); break
+                println("--"); break
             } else if (menu == 5) {
-                println("수정"); break
+                println("--"); break
             } else if (menu == 6) {
-                println("수정"); break
+                println("--"); break
             } else {
-                println("수정"); break
+                println("--"); break
             }
         }
     }
 }
 
 
-class RoomNumber(override var value1: Int, override var value2: Int) : CheckIfValid() {
-    var roomNumber = value1
-    override fun checkIfValid() {
+class RoomNumber() : CheckIfValid() {
+    override fun checkIfValid(roomNumber: Int) {
+        var roomNumber = roomNumber
         while (true) {
             if (roomNumber in 100 until 10000) {
                 break
@@ -66,11 +61,15 @@ class RoomNumber(override var value1: Int, override var value2: Int) : CheckIfVa
             }
         }
     }
+
+    override fun checkIfValid(value1: Int, value2: Int) {
+        TODO("Not yet implemented")
+    }
 }
 
-class CheckInDate(override var value1: Int, override var value2: Int) : CheckIfValid() {
-    var checkInDate = value1
-    override fun checkIfValid() {
+class CheckInDate() : CheckIfValid() {
+    override fun checkIfValid(checkInDate: Int) {
+        var checkInDate = checkInDate
         while (true) {
             if (checkInDate > todayDate) {
                 break
@@ -80,12 +79,19 @@ class CheckInDate(override var value1: Int, override var value2: Int) : CheckIfV
             }
         }
     }
-}
 
-class CheckOutDate(override var value1: Int, override var value2: Int) : CheckIfValid() {
-    var checkOutDate = value1
-    var checkInDate = value2
-    override fun checkIfValid() {
+    override fun checkIfValid(value1: Int, value2: Int) {
+        TODO("Not yet implemented")
+    }
+}
+class CheckOutDate() : CheckIfValid() {
+    override fun checkIfValid(value1: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun checkIfValid(checkInDate: Int, checkOutDate: Int) {
+        var checkInDate = checkInDate
+        var checkOutDate = checkOutDate
         while (true) {
             if (checkOutDate > checkInDate) {
                 break
@@ -95,9 +101,11 @@ class CheckOutDate(override var value1: Int, override var value2: Int) : CheckIf
             }
         }
     }
+
+
 }
 
-class Menu1 :CheckIfValid(){
+class Menu1 {
     fun menu1() {
 
         println("예약자분의 성함을 입력해주세요.")
@@ -105,18 +113,18 @@ class Menu1 :CheckIfValid(){
 
         println("예약할 방번호를 입력해주세요.")
         var roomNumber = readLine()!!.toInt()
-        var roomNumberObject = RoomNumber(roomNumber, 0)
-        roomNumberObject.checkIfValid()
+        var roomNumberObject = RoomNumber()
+        roomNumberObject.checkIfValid(roomNumber)
 
         println("체크인 날짜를 입력해주세요 표기형식. 20230631")
         var checkInDate = readLine()!!.toInt()
-        var checkInDateObject = CheckInDate(checkInDate, 0)
-        checkInDateObject.checkIfValid()
+        var checkInDateObject = CheckInDate()
+        checkInDateObject.checkIfValid(checkInDate)
 
         println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
         var checkOutDate = readLine()!!.toInt()
-        var checkOutDateObject = CheckOutDate(checkOutDate, checkInDate)
-        checkOutDateObject.checkIfValid()
+        var checkOutDateObject = CheckOutDate()
+        checkOutDateObject.checkIfValid(checkInDate, checkOutDate)
     }
 
 }

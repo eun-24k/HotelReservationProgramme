@@ -1,6 +1,7 @@
 package com.example.hotelreservationprogramme
 
 fun main() {
+    // 변수 선언
     var todayDate: Int = 20231201
     var menu: Int
     var name: String
@@ -33,7 +34,7 @@ fun main() {
     }
 
     while (true) {
-        if (checkInDate < todayDate) {
+        if (checkInDate > todayDate) {
             println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
             checkOutDate = readLine()!!.toInt()
             break

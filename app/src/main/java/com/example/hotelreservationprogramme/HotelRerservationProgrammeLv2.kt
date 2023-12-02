@@ -9,46 +9,55 @@ fun main() {
     val menuObject = MainMenu()
     menuObject.mainMenu()
 
-    println("호텔 예약이 완료되었습니다.")
+    println("호텔 프로그램을 종료합니다.")
 }
 
 class MainMenu {
     fun mainMenu() {
-        println("호텔예약 프로그램 입니다.")
-        println("1. 방예약, 2. 예약목록 출력, 3 예약목록 (정렬) 출력, 4. 시스템 종료, 5. 금액 입금-출금 내역 목록 출력 6. 예약 변경/취소")
 
-        val readLineExceptionInt = ReadLineExceptionInt()
-        val menu = readLineExceptionInt.checkIfValid()
-        var bookingInfo = mutableListOf<List<Any>>()
+        var bookingInfo: MutableList<BookingInfo> = mutableListOf()
 
         while (true) {
-            if (menu == 1) {
-                val menu1 = Menu1()
-                bookingInfo.add(menu1.menu1())
-                break
-            } else if (menu == 2) {
-                val menu2 = Menu2()
-                menu2.menu2(bookingInfo)
-                println("--"); break
-            } else if (menu == 3) {
-                println("--"); break
-            } else if (menu == 4) {
-                println("--"); break
-            } else if (menu == 5) {
-                println("--"); break
-            } else if (menu == 6) {
-                println("--"); break
-            } else {
-                println("--"); break
+            println("호텔예약 프로그램 입니다.")
+            println("1. 방예약, 2. 예약목록 출력, 3 예약목록 (정렬) 출력, 4. 시스템 종료, 5. 금액 입금-출금 내역 목록 출력 6. 예약 변경/취소")
+
+            val readLineExceptionInt = ReadLineExceptionInt()
+            val menu = readLineExceptionInt.checkIfValid()
+
+            when (menu) {
+                1 -> { // 방 예약
+                    val menu1 = Menu1()
+                    bookingInfo.add(menu1.menu1())
+                    println(bookingInfo)
+                }
+
+                2 -> { // 예약목록 출력
+                    val menu2 = Menu2()
+                    menu2.menu2(bookingInfo)
+                }
+
+                3 -> { // 예약목록 (정렬) 출력
+                    val menu3 = Menu3()
+                    menu3.menu3(bookingInfo)
+                }
+                4 -> break // 시스템 종료
+                5 -> { // 금액 입금-출금 내역 목록 출력
+
+                }
+                6 -> { // 예약 변경/취소
+
+                }
+                else -> {}
             }
         }
+
     }
 }
 
 class Menu1 {
     fun menu1(): List<Any> {
 
-        var bookingInfo = mutableListOf<Any>()
+        var bookingInfo: MutableList<Any> = mutableListOf()
         val readLinExceptionInt = ReadLineExceptionInt()
 
         println("예약자분의 성함을 입력해주세요.")
@@ -81,27 +90,36 @@ class Menu1 {
 class Menu2 {
     fun menu2(bookingInfo: MutableList<List<Any>>) {
         println("호텔 예약자 목록입니다.")
-        for (i in bookingInfo.indices) {
-            println("1. 사용자: ${bookingInfo[i][0]}, 방번호: ${bookingInfo[i][1]}호, 체크인: ${bookingInfo[i][2]}, 체크아웃: ${bookingInfo[i][3]}")
+        for (i in 0 until bookingInfo.size) {
+            println("${i + 1}. 사용자: ${bookingInfo[i][0]}, 방번호: ${bookingInfo[i][1]}호, 체크인: ${bookingInfo[i][2]}, 체크아웃: ${bookingInfo[i][3]}")
         }
-
-
+    }
+}
+class Menu3 {
+    fun menu3(bookingInfo: MutableList<List<Any>>) {
+        var bookingInfo = bookingInfo
+        bookingInfo.sortBy{ it.checkInDate }
+        for (i in 0 until bookingInfo.size) {
+            println("${i + 1}. 사용자: ${bookingInfo[i][0]}, 방번호: ${bookingInfo[i][1]}호, 체크인: ${bookingInfo[i][2]}, 체크아웃: ${bookingInfo[i][3]}")
+        }
     }
 }
 
+data class BookingInfo(var name:String, var roomNumber: Int, var checkInDate: Int, var checkOutDate: Int)
+
 abstract class CheckIfValid {
-    abstract fun checkIfValid() : Int
-    abstract fun checkIfValid(value1: Int) : Int
-    abstract fun checkIfValid(value1: Int, value2: Int) : Int
+    abstract fun checkIfValid(): Int
+    abstract fun checkIfValid(value1: Int): Int
+    abstract fun checkIfValid(value1: Int, value2: Int): Int
     var todayDate: Int = 20231201
 }
 
 class RoomNumber : CheckIfValid() {
-    override fun checkIfValid() : Int {
+    override fun checkIfValid(): Int {
         TODO("Not yet implemented")
     }
 
-    override fun checkIfValid(value1: Int) : Int {
+    override fun checkIfValid(value1: Int): Int {
         var roomNumber = value1
         val readLineExceptionInt = ReadLineExceptionInt()
         while (true) {
@@ -113,17 +131,18 @@ class RoomNumber : CheckIfValid() {
             }
         }
     }
-    override fun checkIfValid(value1: Int, value2: Int) : Int{
+
+    override fun checkIfValid(value1: Int, value2: Int): Int {
         TODO("Not yet implemented")
     }
 }
 
 class CheckInDate : CheckIfValid() {
-    override fun checkIfValid() : Int{
+    override fun checkIfValid(): Int {
         TODO("Not yet implemented")
     }
 
-    override fun checkIfValid(value1: Int) : Int {
+    override fun checkIfValid(value1: Int): Int {
         var checkInDate = value1
         val readLineExceptionInt = ReadLineExceptionInt()
 
@@ -137,17 +156,17 @@ class CheckInDate : CheckIfValid() {
         }
     }
 
-    override fun checkIfValid(value1: Int, value2: Int) : Int{
+    override fun checkIfValid(value1: Int, value2: Int): Int {
         TODO("Not yet implemented")
     }
 }
 
 class CheckOutDate : CheckIfValid() {
-    override fun checkIfValid() : Int{
+    override fun checkIfValid(): Int {
         TODO("Not yet implemented")
     }
 
-    override fun checkIfValid(value1: Int) : Int{
+    override fun checkIfValid(value1: Int): Int {
         TODO("Not yet implemented")
     }
 
@@ -179,11 +198,11 @@ class ReadLineExceptionInt : CheckIfValid() {
         }
     }
 
-    override fun checkIfValid(value1: Int) : Int{
+    override fun checkIfValid(value1: Int): Int {
         TODO("Not yet implemented")
     }
 
-    override fun checkIfValid(value1: Int, value2: Int) : Int{
+    override fun checkIfValid(value1: Int, value2: Int): Int {
         TODO("Not yet implemented")
     }
 }

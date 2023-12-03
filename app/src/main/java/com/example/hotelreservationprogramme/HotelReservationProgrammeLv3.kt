@@ -24,7 +24,7 @@ open class MainMenu {
             when (menu) {
                 1 -> { // 방 예약
                     val menu1 = Menu1()
-                    bookingInfo.add(menu1.menu1())
+                    bookingInfo.add(menu1.menu1(bookingInfo))
                     println(bookingInfo)
                 }
 
@@ -58,34 +58,142 @@ open class MainMenu {
 // 메뉴 클래스 --------------------------------------------------------------------------------------
 
 class Menu1 : MainMenu() {
-    fun menu1(): BookingInfo {
+    fun menu1(bookingInfo: MutableList<BookingInfo>): BookingInfo {
 
-        val readLinExceptionInt = ReadLineExceptionInt()
+        val newName = SubMenu1Name().subMenu1Name()
+        val newRoomNumber = SubMenu1RoomNumber().subMenu1RoomNumber()
+        var newCheckInDate = SubMenu1CheckInDate().subMenu1CheckInDate()
+        newCheckInDate = SubMenu1CheckCheckInDate().subMenu1CheckCheckInDate(
+            bookingInfo,
+            newRoomNumber,
+            newCheckInDate
+        )
 
-        println("예약자분의 성함을 입력해주세요.")
-        val name = readLine()!!
+        var newCheckOutDate = SubMenu1CheckOutDate().subMenu1CheckOutDate(newCheckInDate)
+        newCheckOutDate = SubMenu1CheckCheckOutDate().subMenu1CheckCheckOutDate(
+            bookingInfo,
+            newRoomNumber,
+            newCheckInDate,
+            newCheckOutDate
+        )
 
-        println("예약할 방번호를 입력해주세요.")
-        var roomNumber = readLinExceptionInt.checkIntException()
-        val roomNumberObject = RoomNumber()
-        roomNumber = roomNumberObject.checkNumber(roomNumber)
+        val paymentIn: Int = SubMenu1PaymentIn().subMenu1PaymentIn()
+        val paymentOut: Int = SubMenu1PaymentOut().subMenu1PaymentOut()
 
-        println("체크인 날짜를 입력해주세요 표기형식. 20230631")
-        var checkInDate = readLinExceptionInt.checkIntException()
-        val checkInDateObject = CheckInDate()
-        checkInDate = checkInDateObject.checkNumber(checkInDate)
-
-        println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
-        var checkOutDate = readLinExceptionInt.checkIntException()
-        val checkOutDateObject = CheckOutDate()
-        checkOutDate = checkOutDateObject.checkNumber(checkInDate, checkOutDate)
-
-        val paymentIn: Int = (10000..1000000).random()
-        val paymentOut: Int = (10000..1000000).random()
-
-        val user = BookingInfo(name, roomNumber, checkInDate, checkOutDate, paymentIn, paymentOut)
+        val user = BookingInfo(
+            newName,
+            newRoomNumber,
+            newCheckInDate,
+            newCheckOutDate,
+            paymentIn,
+            paymentOut
+        )
 
         return user
+    }
+}
+
+class SubMenu1Name {
+    fun subMenu1Name(): String {
+        println("예약자분의 성함을 입력해주세요.")
+        val newName = readLine()!!
+        return newName
+    }
+}
+
+
+class SubMenu1RoomNumber {
+    fun subMenu1RoomNumber(): Int {
+        println("예약할 방번호를 입력해주세요.")
+        val readLinExceptionInt = ReadLineExceptionInt()
+        var newRoomNumber = readLinExceptionInt.checkIntException()
+        val roomNumberObject = RoomNumber()
+        newRoomNumber = roomNumberObject.checkNumber(newRoomNumber)
+        return newRoomNumber
+    }
+}
+
+class SubMenu1CheckInDate {
+    fun subMenu1CheckInDate(): Int {
+        println("체크인 날짜를 입력해주세요 표기형식. 20230631")
+        val readLinExceptionInt = ReadLineExceptionInt()
+        var newCheckInDate = readLinExceptionInt.checkIntException()
+        val checkInDateObject = CheckInDate()
+        newCheckInDate = checkInDateObject.checkNumber(newCheckInDate)
+        return newCheckInDate
+    }
+}
+
+class SubMenu1CheckOutDate {
+    fun subMenu1CheckOutDate(newCheckInDate: Int): Int {
+        println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
+        val readLinExceptionInt = ReadLineExceptionInt()
+        var newCheckOutDate = readLinExceptionInt.checkIntException()
+        val checkOutDateObject = CheckOutDate()
+        newCheckOutDate = checkOutDateObject.checkNumber(newCheckInDate, newCheckOutDate)
+        return newCheckOutDate
+    }
+}
+
+class SubMenu1PaymentIn {
+    fun subMenu1PaymentIn(): Int {
+        val paymentIn: Int = (10000..1000000).random()
+        return paymentIn
+    }
+}
+
+class SubMenu1PaymentOut {
+    fun subMenu1PaymentOut(): Int {
+        val paymentOut: Int = (10000..1000000).random()
+        return paymentOut
+    }
+}
+
+class SubMenu1CheckCheckInDate {
+    fun subMenu1CheckCheckInDate(
+        bookingInfo: MutableList<BookingInfo>,
+        newRoomNumber: Int,
+        newCheckInDate: Int
+    ): Int {
+        while (true) {
+            var i = 0
+            while (i < bookingInfo.size) {
+                var (_, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
+                if ((roomNumber == newRoomNumber) && (checkInDate <= newCheckInDate) && (newCheckInDate < checkOutDate)) {
+                    println("해당 날짜에 이미 방을 사용중입니다. 다른 날짜를 입력하세요.")
+                    var newCheckInDate = SubMenu1CheckInDate().subMenu1CheckInDate()
+                    i = -1
+                }
+                i++
+            }
+            break
+        }
+        return newCheckInDate
+    }
+}
+
+class SubMenu1CheckCheckOutDate {
+    fun subMenu1CheckCheckOutDate(
+        bookingInfo: MutableList<BookingInfo>,
+        newRoomNumber: Int,
+        newCheckInDate: Int,
+        newCheckOutDate: Int
+    ): Int {
+        while (true) {
+            var i = 0
+            while (i < bookingInfo.size) {
+                var (_, roomNumber, checkInDate) = bookingInfo[i]
+                if ((roomNumber == newRoomNumber) && (newCheckOutDate > checkInDate)) {
+                    println("해당 날짜에 이미 방을 사용중입니다. 다른 날짜를 입력하세요.")
+                    var newCheckOutDate =
+                        SubMenu1CheckOutDate().subMenu1CheckOutDate(newCheckInDate)
+                    i = -1
+                }
+                i++
+            }
+            break
+        }
+        return newCheckOutDate
     }
 }
 
@@ -206,7 +314,7 @@ class CheckOutDate : CheckNumberTwoInput {
 }
 
 class CheckName : CheckBookingInfoInput {
-    override fun checkString(bookingInfo: MutableList<BookingInfo>):Int {
+    override fun checkString(bookingInfo: MutableList<BookingInfo>): Int {
         println("조회하실 사용자 이름을 입력하세요.")
         var checkName = readLine()!!
         var userIndex = -1

@@ -53,7 +53,9 @@ open class MainMenu {
         }
     }
 }
+
 // 메뉴 클래스 --------------------------------------------------------------------------------------
+
 class Menu1 : MainMenu() {
     fun menu1(): BookingInfo {
 
@@ -88,7 +90,7 @@ class Menu2 {
     fun menu2(bookingInfo: MutableList<BookingInfo>) {
         println("호텔 예약자 목록입니다.")
         for (i in 0 until bookingInfo.size) {
-            var (name, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
+            val (name, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
             println("${i + 1}. 사용자: $name, 방번호: $roomNumber 호, 체크인: $checkInDate, 체크아웃: $checkOutDate")
         }
     }
@@ -111,16 +113,15 @@ class Menu5 {
     }
 
 }
+
 // 데이터 클래스 -------------------------------------------------------------------------------------
 
 data class BookingInfo(
-    var name: String,
-    var roomNumber: Int,
-    var checkInDate: Int,
-    var checkOutDate: Int
+    var name: String, var roomNumber: Int, var checkInDate: Int, var checkOutDate: Int
 )
 
 // 인터페이스 ---------------------------------------------------------------------------------------
+
 interface CheckIntException {
     fun checkIntException(): Int
 }
@@ -128,6 +129,7 @@ interface CheckIntException {
 interface CheckNumberOneInput {
     fun checkNumber(value1: Int): Int
 }
+
 interface CheckNumberTwoInput {
     fun checkNumber(value1: Int, value2: Int): Int
 }
@@ -182,6 +184,7 @@ class CheckOutDate : CheckNumberTwoInput {
         }
     }
 }
+
 class ReadLineExceptionInt : CheckIntException {
     override fun checkIntException(): Int {
         while (true) {

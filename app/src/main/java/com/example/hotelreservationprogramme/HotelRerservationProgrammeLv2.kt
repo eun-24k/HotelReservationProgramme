@@ -1,7 +1,5 @@
 package com.example.hotelreservationprogramme
 
-import android.content.res.TypedArray
-
 fun main() {
     // 첫번째 실행 (메뉴 선택)
 
@@ -12,7 +10,7 @@ fun main() {
     println("호텔 프로그램을 종료합니다.")
 }
 
-class MainMenu {
+open class MainMenu {
     fun mainMenu() {
 
         var bookingInfo: MutableList<BookingInfo> = mutableListOf()
@@ -54,53 +52,53 @@ class MainMenu {
     }
 }
 
-class Menu1 {
-    fun menu1(): List<Any> {
+class Menu1: MainMenu() {
+    fun menu1(): BookingInfo {
 
         var bookingInfo: MutableList<Any> = mutableListOf()
         val readLinExceptionInt = ReadLineExceptionInt()
 
         println("예약자분의 성함을 입력해주세요.")
         val name = readLine()!!
-        bookingInfo.add(name)
 
         println("예약할 방번호를 입력해주세요.")
         var roomNumber = readLinExceptionInt.checkIfValid()
         val roomNumberObject = RoomNumber()
         roomNumber = roomNumberObject.checkIfValid(roomNumber)
-        bookingInfo.add(roomNumber)
 
         println("체크인 날짜를 입력해주세요 표기형식. 20230631")
         var checkInDate = readLinExceptionInt.checkIfValid()
         val checkInDateObject = CheckInDate()
         checkInDate = checkInDateObject.checkIfValid(checkInDate)
-        bookingInfo.add(checkInDate)
 
 
         println("체크아웃 날짜를 입력해주세요 표기형식. 20230631")
         var checkOutDate = readLinExceptionInt.checkIfValid()
         val checkOutDateObject = CheckOutDate()
         checkOutDate = checkOutDateObject.checkIfValid(checkInDate, checkOutDate)
-        bookingInfo.add(checkOutDate)
 
-        return bookingInfo
+        val User = BookingInfo(name, roomNumber, checkInDate, checkOutDate)
+
+        return User
     }
 }
 
 class Menu2 {
-    fun menu2(bookingInfo: MutableList<List<Any>>) {
+    fun menu2(bookingInfo: MutableList<BookingInfo>) {
         println("호텔 예약자 목록입니다.")
         for (i in 0 until bookingInfo.size) {
-            println("${i + 1}. 사용자: ${bookingInfo[i][0]}, 방번호: ${bookingInfo[i][1]}호, 체크인: ${bookingInfo[i][2]}, 체크아웃: ${bookingInfo[i][3]}")
+            var (name, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
+            println("${i + 1}. 사용자: ${name}, 방번호: ${roomNumber}호, 체크인: ${checkInDate}, 체크아웃: ${checkOutDate}")
         }
     }
 }
 class Menu3 {
-    fun menu3(bookingInfo: MutableList<List<Any>>) {
+    fun menu3(bookingInfo: MutableList<BookingInfo>) {
         var bookingInfo = bookingInfo
         bookingInfo.sortBy{ it.checkInDate }
         for (i in 0 until bookingInfo.size) {
-            println("${i + 1}. 사용자: ${bookingInfo[i][0]}, 방번호: ${bookingInfo[i][1]}호, 체크인: ${bookingInfo[i][2]}, 체크아웃: ${bookingInfo[i][3]}")
+            var (name, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
+            println("${i + 1}. 사용자: ${name}, 방번호: ${roomNumber}호, 체크인: ${checkInDate}, 체크아웃: ${checkOutDate}")
         }
     }
 }

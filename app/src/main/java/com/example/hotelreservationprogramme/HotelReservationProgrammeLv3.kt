@@ -160,7 +160,7 @@ class SubMenu1CheckCheckInDate {
             var i = 0
             while (i < bookingInfo.size) {
                 var (_, roomNumber, checkInDate, checkOutDate) = bookingInfo[i]
-                if ((roomNumber == newRoomNumber) && (checkInDate <= newCheckInDate) && (newCheckInDate < checkOutDate)) {
+                if ((roomNumber == newRoomNumber) && (checkInDate <= newCheckInDate) && (newCheckInDate <= checkOutDate)) {
                     println("해당 날짜에 이미 방을 사용중입니다. 다른 날짜를 입력하세요.")
                     newCheckInDate = SubMenu1CheckInDate().subMenu1CheckInDate()
                     i = -1
@@ -181,13 +181,13 @@ class SubMenu1CheckCheckOutDate {
         newCheckOutDate: Int
     ): Int {
         while (true) {
+            var newCheckOutDate = newCheckOutDate
             var i = 0
             while (i < bookingInfo.size) {
                 val (_, roomNumber, checkInDate) = bookingInfo[i]
-                if ((roomNumber == newRoomNumber) && (newCheckOutDate > checkInDate)) {
+                if ((roomNumber == newRoomNumber) && (newCheckInDate < newCheckOutDate) && (newCheckOutDate > checkInDate)) {
                     println("해당 날짜에 이미 방을 사용중입니다. 다른 날짜를 입력하세요.")
-                    var newCheckOutDate =
-                        SubMenu1CheckOutDate().subMenu1CheckOutDate(newCheckInDate)
+                    newCheckOutDate = SubMenu1CheckOutDate().subMenu1CheckOutDate(newCheckInDate)
                     i = -1
                 }
                 i++
